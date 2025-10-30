@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Spending_Tracker.Pages.ExpenseListPage"
+             Title="Lista Cheltuieli">
+
+    <VerticalStackLayout Padding="0" Spacing="0">
+        
+        <!-- Filter Bar -->
+        <Border Padding="15" StrokeShape="RoundRectangle 0" BackgroundColor="#F0F0F0">
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                <Picker x:Name="FilterPicker"
+                        Grid.Column="0"
+                        Title="Filtru categorie"
+                        FontSize="12"/>
+                <Button x:Name="ClearFilterButton"
+                        Grid.Column="1"
+                        Text="Gol"
+                        Clicked="OnClearFilterClicked"
+                        BackgroundColor="#FF6B6B"
+                        TextColor="White"
+                        Padding="10,5"
+                        FontSize="12"/>
+            </Grid>
+        </Border>
+
+        <!-- Expenses List -->
+        <CollectionView x:Name="ExpensesCollectionView"
+                       SelectionMode="Single"
+                       SelectionChangedCommand="{Binding SelectionChangedCommand}"
+                       SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}"
+                       Margin="0">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border Padding="15" Margin="10,5" StrokeShape="RoundRectangle 10" BackgroundColor="White" Stroke="#E0E0E0">
+                        <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto" ColumnSpacing="10" RowSpacing="5">
+                            <Label Grid.Row="0" Grid.Column="0"
+                                  Text="{Binding Description}"
+                                  FontSize="16"
+                                  FontAttributes="Bold"/>
+                            <Label Grid.Row="0" Grid.Column="1"
+                                  Text="{Binding AmountText}"
+                                  FontSize="16"
+                                  FontAttributes="Bold"
+                                  TextColor="#512BD4"/>
+                            <Label Grid.Row="1" Grid.Column="0"
+                                  Text="{Binding CategoryAndDate}"
+                                  FontSize="12"
+                                  TextColor="Gray"/>
+                            <Label Grid.Row="1" Grid.Column="1"
+                                  Text="{Binding Currency}"
+                                  FontSize="12"
+                                  TextColor="Gray"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </VerticalStackLayout>
+
+</ContentPage>
+

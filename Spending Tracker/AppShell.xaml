@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="Spending_Tracker.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Spending_Tracker"
+    xmlns:pages="clr-namespace:Spending_Tracker.Pages"
+    Title="Spending Tracker"
+    FlyoutBackgroundColor="#F8F9FA"
+    FlyoutWidth="280">
+
+    <Shell.FlyoutHeaderTemplate>
+        <DataTemplate>
+            <VerticalStackLayout Spacing="0" BackgroundColor="#512BD4" Padding="20,30">
+                <Label Text="💰 Spending Tracker" 
+                       FontSize="24" 
+                       FontAttributes="Bold"
+                       TextColor="White"
+                       HorizontalOptions="Start"/>
+                <Label Text="Gestionează cheltuielile inteligent" 
+                       FontSize="12" 
+                       TextColor="#E0E0E0"
+                       HorizontalOptions="Start"
+                       Margin="0,5,0,0"/>
+            </VerticalStackLayout>
+        </DataTemplate>
+    </Shell.FlyoutHeaderTemplate>
+
+    <FlyoutItem Title="Acasă" Icon="dotnet_bot.png">
+        <ShellContent
+            Title="Cheltuieli"
+            ContentTemplate="{DataTemplate local:MainPage}"
+            Route="MainPage" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Lista Cheltuieli" Icon="dotnet_bot.png">
+        <ShellContent
+            Title="Lista"
+            ContentTemplate="{DataTemplate pages:ExpenseListPage}"
+            Route="ExpenseListPage" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Bugete" Icon="dotnet_bot.png">
+        <ShellContent
+            Title="Bugete"
+            ContentTemplate="{DataTemplate pages:BudgetPage}"
+            Route="BudgetPage" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Categorii" Icon="dotnet_bot.png">
+        <ShellContent
+            Title="Categorii"
+            ContentTemplate="{DataTemplate pages:CategoriesPage}"
+            Route="CategoriesPage" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Statistici" Icon="dotnet_bot.png">
+        <ShellContent
+            Title="Statistici"
+            ContentTemplate="{DataTemplate pages:StatisticsPage}"
+            Route="StatisticsPage" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Rapoarte" Icon="dotnet_bot.png">
+        <ShellContent
+            Title="Rapoarte"
+            ContentTemplate="{DataTemplate pages:ReportsPage}"
+            Route="ReportsPage" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Conversie Valutară" Icon="dotnet_bot.png">
+        <ShellContent
+            Title="Conversie"
+            ContentTemplate="{DataTemplate pages:CurrencyConverterPage}"
+            Route="CurrencyConverterPage" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Setări" Icon="dotnet_bot.png">
+        <ShellContent
+            Title="Setări"
+            ContentTemplate="{DataTemplate pages:SettingsPage}"
+            Route="SettingsPage" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Despre" Icon="dotnet_bot.png">
+        <ShellContent
+            Title="Despre"
+            ContentTemplate="{DataTemplate pages:AboutPage}"
+            Route="AboutPage" />
+    </FlyoutItem>
+
+</Shell>

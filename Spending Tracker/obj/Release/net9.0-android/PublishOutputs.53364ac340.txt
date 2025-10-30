@@ -1,0 +1,3 @@
+C:\Users\Stefan\RiderProjects\Spending Tracker\Spending Tracker\bin\Release\net9.0-android\publish\com.companyname.spendingtracker-Signed.apk
+C:\Users\Stefan\RiderProjects\Spending Tracker\Spending Tracker\bin\Release\net9.0-android\publish\com.companyname.spendingtracker.apk
+C:\Users\Stefan\RiderProjects\Spending Tracker\Spending Tracker\bin\Release\net9.0-android\publish\_Microsoft.Android.Resource.Designer.dll

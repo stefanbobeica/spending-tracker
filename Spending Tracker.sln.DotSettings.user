@@ -1,0 +1,5 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/Hierarchy/Build/SolBuilderDuo/CustomGlobalProperties/=AcceptAndroidSDKLicenses/@EntryIndexedValue">True</s:String>
+	<s:String x:Key="/Default/Environment/Hierarchy/Build/SolBuilderDuo/CustomGlobalProperties/=AndroidSdkDirectory/@EntryIndexedValue">C:\Users\Stefan\AppData\Local\Android\Sdk</s:String>
+	
+	<s:String x:Key="/Default/Environment/Hierarchy/Build/SolBuilderDuo/CustomGlobalProperties/=JavaSdkDirectory/@EntryIndexedValue">C:\Program Files\Java\jdk-17.0.0.1</s:String></wpf:ResourceDictionary>

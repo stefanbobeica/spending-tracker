@@ -1,0 +1,896 @@
+﻿================================================================================
+                        SPENDING TRACKER
+              Sistem de Gestionare a Cheltuielilor Zilnice
+                    Documentație Tehnică Completă
+================================================================================
+
+PAGINA DE TITLU
+
+Titlu: SPENDING TRACKER - Sistem Integrat de Gestionare și Analiză a Cheltuielilor
+
+Autor: Echipa de Dezvoltare
+Data: Octombrie 2025
+Versiune: 1.0.0
+Platformă: .NET MAUI
+Bază de Date: SQLite
+Limbă: Română
+
+================================================================================
+CUPRINS
+================================================================================
+
+1. INTRODUCERE
+   1.1. Prezentare Generală
+   1.2. Obiectivele Proiectului
+   1.3. Motivație și Context
+
+2. DESCRIERE TEHNICĂ
+   2.1. Arhitectura Sistemului
+   2.2. Tehnologii Utilizate
+   2.3. Structura Proiectului
+
+3. MODELUL DE DATE
+   3.1. Entitatea Cheltuială (Expense)
+   3.2. Entitatea Categorie (Category)
+   3.3. Entitatea Buget (Budget)
+   3.4. Relații între Entități
+
+4. SERVICII DE BAZĂ
+   4.1. DatabaseService
+   4.2. CurrencyService
+   4.3. Inițializare și Seeding Date
+
+5. INTERFACE-URI UTILIZATOR
+   5.1. Pagina Principală (MainPage)
+   5.2. Lista Cheltuieli (ExpenseListPage)
+   5.3. Gestionare Bugete (BudgetPage)
+   5.4. Gestionare Categorii (CategoriesPage)
+   5.5. Statistici (StatisticsPage)
+   5.6. Rapoarte (ReportsPage)
+   5.7. Convertor Valute (CurrencyConverterPage)
+   5.8. Setări (SettingsPage)
+   5.9. Despre (AboutPage)
+
+6. FUNCȚIONALITĂȚI PRINCIPALE
+   6.1. Adăugare și Editare Cheltuieli
+   6.2. Filtrare și Căutare
+   6.3. Gestionare Bugete Lunare
+   6.4. Analiză Statistică
+   6.5. Rapoarte Periodice
+   6.6. Conversia Valutelor
+
+7. FLUXURI DE DATE
+   7.1. Flux de Adăugare Cheltuială
+   7.2. Flux de Analiză Statistică
+   7.3. Flux de Gestionare Bugete
+
+8. CARACTERISTICI DE SECURITATE
+   8.1. Validare Date
+   8.2. Gestionare Erori
+   8.3. Confirmări Critice
+
+9. GHID UTILIZATOR
+   9.1. Primii Pași
+   9.2. Operații Frecvente
+   9.3. Interpretare Rapoarte
+
+10. CONCLUZII ȘI PERSPECTIVĂ VIITOARE
+
+================================================================================
+1. INTRODUCERE
+================================================================================
+
+1.1. PREZENTARE GENERALĂ
+
+Spending Tracker este o aplicație mobilă multiplatformă desenvolvată în .NET MAUI
+care oferă o soluție completă pentru gestionarea cheltuielilor zilnice. Aplicația
+permite utilizatorilor să înregistreze, categorizeze, analizeze și optimizeze
+cheltuielile lor financiare.
+
+Caracteristici principale:
+- Înregistrare rapidă a cheltuielilor cu detalii complete
+- Categorisare automată și personalizabilă
+- Gestionare bugete lunare per categorie
+- Analiză statistică avansată cu progrese vizuale
+- Rapoarte detaliate pe diferite perioade
+- Convertor de monede în timp real
+- Interfață intuitivă și ușor de utilizat
+
+1.2. OBIECTIVELE PROIECTULUI
+
+Obiectivul principal al Spending Tracker este de a oferi utilizatorilor o metodă
+simplă, eficientă și plăcută de urmărire a cheltuielilor lor zilnice. 
+
+Obiective secundare:
+1. Oferirea de insight-uri despre obiceiurile de cheltuire
+2. Ajutarea utilizatorilor să stabilească și să respecte bugete
+3. Identificarea categoriilor cu cheltuieli ridicate
+4. Facilitarea planificării financiare personale
+5. Suportul pentru mai multe valute și conversii automate
+
+1.3. MOTIVAȚIE ȘI CONTEXT
+
+În era digitală actuală, gestionarea finanțelor personale este o provocare pentru
+mulți utilizatori. Plăți zilnice, abonamente și cheltuieli neașteptate se
+acumulează rapid. Spending Tracker vine să rezolve această problemă prin oferirea
+unui instrument centralizat, sigur și ușor de utilizat pentru controlul cheltuielilor.
+
+================================================================================
+2. DESCRIERE TEHNICĂ
+================================================================================
+
+2.1. ARHITECTURA SISTEMULUI
+
+Spending Tracker utilizează o arhitectură modulară cu straturi bine definite:
+
+┌─────────────────────────────────────────────────────────┐
+│             PRESENTATION LAYER (UI)                      │
+│  MainPage, ExpenseListPage, BudgetPage, etc.            │
+└──────────────────┬──────────────────────────────────────┘
+                   │
+┌──────────────────▼──────────────────────────────────────┐
+│           BUSINESS LOGIC LAYER                           │
+│  ViewModels, Event Handlers, Data Processing            │
+└──────────────────┬──────────────────────────────────────┘
+                   │
+┌──────────────────▼──────────────────────────────────────┐
+│            SERVICES LAYER                                │
+│  DatabaseService, CurrencyService                       │
+└──────────────────┬──────────────────────────────────────┘
+                   │
+┌──────────────────▼──────────────────────────────────────┐
+│           DATA ACCESS LAYER                              │
+│  SQLite Database, Local Storage                         │
+└─────────────────────────────────────────────────────────┘
+
+2.2. TEHNOLOGII UTILIZATE
+
+Platformă de Dezvoltare:
+- .NET 9.0 (Framework modern și performant)
+- .NET MAUI (Multi-platform App UI - suportă Android, iOS, macOS, Windows)
+
+Bază de Date:
+- SQLite (bază de date locală, portabilă și ușor de integrat)
+- sqlite-net-pcl (library pentru accesul ORM la baza de date)
+
+Networking și Date:
+- Newtonsoft.Json (serializare JSON pentru date externe)
+- HttpClient (pentru apeluri la API-uri externe)
+
+Alte Librării:
+- SQLitePCLRaw.bundle_green (suport nativ SQLite)
+- Microsoft.Extensions.Logging (logging și debug)
+
+Limbaj de Markup:
+- XAML (Extensible Application Markup Language pentru definirea UI)
+
+2.3. STRUCTURA PROIECTULUI
+
+Spending Tracker/
+├── Models/
+│   ├── Expense.cs          (Model cheltuială)
+│   ├── Category.cs         (Model categorie)
+│   └── Budget.cs           (Model buget)
+├── Pages/
+│   ├── MainPage.xaml       (Pagina principală)
+│   ├── ExpenseListPage.xaml (Lista cheltuieli)
+│   ├── BudgetPage.xaml     (Gestionare bugete)
+│   ├── CategoriesPage.xaml (Gestionare categorii)
+│   ├── StatisticsPage.xaml (Statistici)
+│   ├── ReportsPage.xaml    (Rapoarte)
+│   ├── CurrencyConverterPage.xaml (Convertor valute)
+│   ├── SettingsPage.xaml   (Setări)
+│   └── AboutPage.xaml      (Despre)
+├── Services/
+│   ├── DatabaseService.cs  (Operații bază de date)
+│   └── CurrencyService.cs  (Conversii valute)
+├── Resources/
+│   ├── Styles/
+│   ├── Images/
+│   └── Fonts/
+├── Platforms/
+│   ├── Android/
+│   ├── iOS/
+│   ├── MacCatalyst/
+│   └── Windows/
+├── AppShell.xaml           (Navigare aplicație)
+├── App.xaml                (Resurse globale)
+└── MauiProgram.cs          (Configurare inițială)
+
+================================================================================
+3. MODELUL DE DATE
+================================================================================
+
+3.1. ENTITATEA CHELTUIALĂ (EXPENSE)
+
+Atribute:
+- Id (int): Identificator unic, cheie primară, auto-increment
+- Description (string): Descrierea cheltuielii (ex: "Cumpărături la supermarket")
+- Amount (double): Suma cheltuielii în valuta respectivă
+- Category (string): Categoria cheltuielii (ex: "Alimente", "Transport")
+- Date (DateTime): Data și ora cheltuielii
+- Currency (string): Codul valutei (ex: "RON", "EUR", "USD")
+
+Exemple de Utilizare:
+┌─────┬──────────────────────┬────────┬──────────┬────────────┬──────────┐
+│ Id  │ Description          │ Amount │ Category │ Date       │ Currency │
+├─────┼──────────────────────┼────────┼──────────┼────────────┼──────────┤
+│ 1   │ Cumpărături Lidl     │ 85.50  │ Alimente │ 27/10/2025 │ RON      │
+│ 2   │ Bilet autobuz        │ 2.50   │ Transport│ 27/10/2025 │ RON      │
+│ 3   │ Cinema               │ 40.00  │ Divert.  │ 26/10/2025 │ RON      │
+└─────┴──────────────────────┴────────┴──────────┴────────────┴──────────┘
+
+3.2. ENTITATEA CATEGORIE (CATEGORY)
+
+Atribute:
+- Id (int): Identificator unic, cheie primară, auto-increment
+- Name (string): Nume categoria (ex: "Alimente", "Transport")
+- Color (string): Cod culoare HEX pentru vizualizare (ex: "#FF6B6B")
+
+Categorii Implicite la Inițializare:
+- Alimente (#FF6B6B - Roșu)
+- Transport (#4ECDC4 - Turcoaz)
+- Divertisment (#45B7D1 - Albastru)
+- Utilități (#FFA07A - Portocaliu deschis)
+- Sănătate (#98D8C8 - Mentă)
+- Educație (#F7DC6F - Galben)
+- Altele (#BB8FCE - Purpuriu)
+
+3.3. ENTITATEA BUGET (BUDGET)
+
+Atribute:
+- Id (int): Identificator unic, cheie primară, auto-increment
+- Category (string): Categoria pentru care se setează bugetul
+- MonthlyLimit (double): Limita bugetului lunar în RON
+- Month (int): Luna bugetului (1-12)
+- Year (int): Anul bugetului
+
+Exemplu:
+┌─────┬──────────┬──────────────┬───────┬──────┐
+│ Id  │ Category │ MonthlyLimit  │ Month │ Year │
+├─────┼──────────┼──────────────┼───────┼──────┤
+│ 1   │ Alimente │ 500.00       │ 10    │ 2025 │
+│ 2   │ Transport│ 200.00       │ 10    │ 2025 │
+│ 3   │ Divert.  │ 150.00       │ 10    │ 2025 │
+└─────┴──────────┴──────────────┴───────┴──────┘
+
+3.4. RELAȚII ÎNTRE ENTITĂȚI
+
+Relația Expense - Category (Many-to-One):
+- Fiecare cheltuială (Expense) aparține unei categorii (Category)
+- O categorie poate avea multiple cheltuieli
+- Relația se stabilește prin atributul "Category" din Expense
+
+Relația Budget - Category (Many-to-One):
+- Fiecare buget se referă la o categorie
+- O categorie poate avea bugete pentru luni diferite
+- Relația se stabilește prin atributul "Category" din Budget
+
+Relația Expense - Budget (Implicit):
+- Cheltuielile se compară cu bugetele pe bază de categorie și lună
+- Utilizată pentru calculul procentajului de utilizare a bugetului
+
+================================================================================
+4. SERVICII DE BAZĂ
+================================================================================
+
+4.1. DATABASESERVICE
+
+DatabaseService este serviciul central pentru toate operațiile cu baza de date.
+Oferă acces async la operațiile CRUD (Create, Read, Update, Delete).
+
+Metode Principale:
+
+InitAsync()
+- Inițializează conexiunea la baza de date
+- Creează tabelele dacă nu există
+- Execută seed-ul cu categorii implicite
+- Apelată automat la prima utilizare
+
+GetExpensesAsync(): Task<List<Expense>>
+- Returnează toate cheltuielile sortate descrescător după dată
+- Utilizată în lista cheltuielilor și statistici
+
+GetExpensesByDateRangeAsync(DateTime start, DateTime end): Task<List<Expense>>
+- Returnează cheltuielile din intervalul specificat
+- Utilizată în rapoarte și analize statistice
+
+SaveExpenseAsync(Expense expense): Task<int>
+- Salvează cheltuiala nouă sau actualizează cea existentă
+- Returează numărul de rânduri afectate
+- Validare automată a datelor
+
+DeleteExpenseAsync(Expense expense): Task<int>
+- Șterge cheltuiala din baza de date
+- Utilizată în SettingsPage pentru ștergere în masă
+
+GetCategoriesAsync(): Task<List<Category>>
+- Returnează toate categoriile disponibile
+
+SaveCategoryAsync(Category category): Task<int>
+- Salvează categorie nouă sau actualizează cea existentă
+
+DeleteCategoryAsync(Category category): Task<int>
+- Șterge categorie din baza de date
+
+GetBudgetsAsync(): Task<List<Budget>>
+- Returnează toate bugetele
+
+GetBudgetsForMonthAsync(int month, int year): Task<List<Budget>>
+- Returnează bugetele pentru luna și anul specificat
+- Utilizată în BudgetPage pentru afișarea bugetelor curente
+
+SaveBudgetAsync(Budget budget): Task<int>
+- Salvează buget nou sau actualizează cel existent
+
+4.2. CURRENCYSERVICE
+
+CurrencyService gestionează conversiile de valute prin API extern.
+
+Metode:
+
+GetExchangeRatesAsync(): Task<Dictionary<string, double>>
+- Apelează API-ul exchangerate-api.com pentru ratele curente
+- Returnează ratele de schimb relativă la RON
+- Dacă API-ul nu este disponibil, returnează rate implicite
+
+ConvertCurrencyAsync(double amount, string fromCurrency, string toCurrency): Task<double>
+- Convertește suma de la o valută la alta
+- Utilizează ratele obținute din metoda anterioară
+- Gestionează cazul în care valutele sunt identice
+
+4.3. INIȚIALIZARE ȘI SEEDING DATE
+
+La prima rulare, aplicația:
+1. Inițializează baza de date SQLite
+2. Creează tabelele pentru Expense, Category, Budget
+3. Populate tabelul Category cu 7 categorii implicite
+
+Seeding-ul este efectuat doar dacă tabelul Category este gol, evitând duplicate.
+
+================================================================================
+5. INTERFACE-URI UTILIZATOR
+================================================================================
+
+5.1. PAGINA PRINCIPALĂ (MAINPAGE)
+
+Funcție: Punct de intrare pentru aplicație, oferă acces rapid la adăugarea
+cheltuielilor.
+
+Componente:
+- Input cheltuiala (descriere)
+- Input suma (numeric, validat)
+- Selector categorie din Picker
+- Selector data din DatePicker
+- Selector valută (RON, EUR, USD, GBP)
+- Buton "Salvează cheltuiala"
+
+Fluxul Utilizatorului:
+1. Utilizatorul introduce descrierea cheltuielii
+2. Introduce suma cheltuielii
+3. Selectează categoria
+4. Selectează data (implicit astazi)
+5. Selectează valuta
+6. Apasă "Salvează"
+7. Cheltuiala este stocată în baza de date
+
+Validări:
+- Descrierea nu poate fi goală
+- Suma trebuie să fie număr valid pozitiv
+- Categoria trebuie selectată
+- Valuta trebuie selectată
+
+5.2. LISTA CHELTUIELI (EXPENSELISTPAGE)
+
+Funcție: Afișare toate cheltuielile cu posibilitate de filtrare.
+
+Componente:
+- Picker pentru filtrare pe categorie (implicit "Toate")
+- Buton "Gol" pentru ștergerea filtrului
+- CollectionView cu lista cheltuielilor
+- Fiecare item afișează: descriere, suma, categorie, dată, valută
+
+Filtrare:
+- La selecție pe Picker, lista se actualizează automat
+- Se afișează doar cheltuielile din categoria selectată
+- Butunul "Gol" reseteaza filtrul la "Toate"
+
+Sortare:
+- Cheltuielile sunt sortate descrescător după dată (cele mai recente primeiro)
+
+5.3. GESTIONARE BUGETE (BUDGETPAGE)
+
+Funcție: Setare și monitorizare bugete lunare per categorie.
+
+Componente:
+- Picker pentru selectare categorie
+- Input pentru suma bugetului
+- Buton "Salvează Buget"
+- CollectionView cu bugete active
+
+Informații Afișate pentru Fiecare Buget:
+- Categoria
+- Suma bugetului
+- Suma cheltuită
+- ProgressBar cu procent de utilizare
+- Culoare indicator (verde < 80%, portocaliu 80-100%, roșu > 100%)
+
+Calcul Utilizare Buget:
+- Procentaj = (Suma Cheltuită / Limita Buget) * 100%
+- ProgressBar se umple proporțional
+
+5.4. GESTIONARE CATEGORII (CATEGORIESPAGE)
+
+Funcție: CRUD complet pentru categorii de cheltuieli.
+
+Componente:
+- Input pentru nume categorie
+- Buton selector culoare
+- Buton "Salvează Categorie"
+- CollectionView cu categorii existente
+- Buton "Șterge" pentru fiecare categorie
+
+Workflow Adăugare Categorie:
+1. Utilizatorul introduce nume categorie
+2. Selectează culoare din paletă (8 opțiuni)
+3. Apasă "Salvează Categorie"
+4. Categoria este adăugată în baza de date
+5. Forma se resetează pentru noua intrare
+
+Workflow Ștergere Categorie:
+1. Utilizatorul apasă "Șterge" pe o categorie
+2. Se afișează confirmare
+3. La confirmare, categoria este ștearsă din baza de date
+4. Lista se actualizează automat
+
+5.5. STATISTICI (STATISTICSPAGE)
+
+Funcție: Analiză vizuală a cheltuielilor cu progrese grafice.
+
+Componente:
+- Selector dată inițială și finală
+- Card cu total cheltuieli în perioada selectată
+- Card cu numărul de cheltuieli
+- CollectionView cu detalii per categorie
+- ProgressBar pentru fiecare categorie (procent din total)
+- Card cu media zilnică
+
+Metrici Afișate:
+- Total lunar (suma tuturor cheltuielilor)
+- Numărul de cheltuieli
+- Media zilnică = Total / Numărul de zile din perioadă
+- Cheltuieli per categorie cu ProgressBar
+
+Actualizare:
+- La schimbarea datelor, statisticile se recalculează automat
+
+5.6. RAPOARTE (REPORTSPAGE)
+
+Funcție: Rapoarte detaliate pe perioade diferite.
+
+Componente:
+- Picker perioada: Luna actuală, Luna trecută, Ultimele 3/6 luni, Ultimul an
+- Card cu total lunar
+- Card cu media zilnică
+- Card cu ziua cu cheltuieli maxime
+- CollectionView cu top 5 categorii
+- Buton "Exportă Raport"
+
+Perioade Disponibile:
+- Luna actuală: 1 - ultimul zi a lunii curente
+- Luna trecută: Prima zi a lunii trecute - ultima zi a lunii trecute
+- Ultimele 3 luni: 3 luni înapoi - azi
+- Ultimele 6 luni: 6 luni înapoi - azi
+- Ultimul an: 1 an înapoi - azi
+
+Top Categorii:
+- Afișează primele 5 categorii cu cheltuieli maxime
+- Include numărul de tranzacții per categorie
+- Sortate descrescător după sum
+
+5.7. CONVERTOR VALUTE (CURRENCYCONVERTERPAGE)
+
+Funcție: Conversie monede în timp real.
+
+Componente:
+- Input suma inițială
+- Picker valută sursă (RON, EUR, USD, GBP)
+- Picker valută destinație
+- Label cu rezultatul conversiei
+- Buton "Converteste"
+
+Fluxul Conversiei:
+1. Utilizatorul introduce suma
+2. Selectează valuta sursă
+3. Selectează valuta destinație
+4. Apasă "Converteste"
+5. Rezultatul se afișează cu 2 zecimale
+
+Gestionare Erori:
+- Dacă API-ul nu e disponibil, se folosesc rate implicite
+- Se afișează mesaj informativi
+
+5.8. SETĂRI (SETTINGSPAGE)
+
+Funcție: Configurări ale aplicației și gestionare buget.
+
+Componente:
+- Picker categorie și input buget (analog BudgetPage)
+- CollectionView cu bugetele curente ale lunii
+- Afișare statistici: Total cheltuieli, Numărul categorii
+- Buton "Șterge toate cheltuielile" cu confirmare
+
+Funcționare:
+- Se reîncarcă datele la fiecare accesare
+- Ștergerea în masă a cheltuielilor necesită confirmare explicită
+- Statisticile se actualizează în timp real
+
+5.9. DESPRE (ABOUTPAGE)
+
+Funcție: Informații despre aplicație, ghid utilizare, versiune.
+
+Conținut:
+- Titlu și versiune aplicație
+- Descriere generală
+- Lista funcționalităților principale
+- Ghid "Cum să utilizezi" (4 pași)
+- Sfat de utilizare
+- Informații tehnice: Platform (.NET MAUI), Database (SQLite), Limba (Română)
+- Footer cu copyright
+
+================================================================================
+6. FUNCȚIONALITĂȚI PRINCIPALE
+================================================================================
+
+6.1. ADĂUGARE ȘI EDITARE CHELTUIELI
+
+Procesul de Adăugare:
+1. Utilizatorul accesează MainPage
+2. Completează formularul: descriere, suma, categorie, dată, valută
+3. Apasă "Salvează"
+4. DatabaseService.SaveExpenseAsync() este apelat
+5. Cheltuiala este inserată în tabelul Expense
+6. Se afișează mesaj de succes
+
+Validări Aplicate:
+- Descriere: Nu poate fi goală, lungime minimă 3 caractere
+- Suma: Trebuie număr pozitiv, format 0.00
+- Categoria: Trebuie selectată din listă
+- Dată: Implicit azi, poate fi editată
+- Valută: Implicit RON, opțiuni: RON, EUR, USD, GBP
+
+Editare Cheltuiala:
+- Din Lista Cheltuieli, utilizatorul tap pe o cheltuiala (future feature)
+- Formularul se populează cu datele existente
+- Modifică datele necesare
+- Apasă "Actualizează"
+- DatabaseService detectează Id != 0 și apelează UpdateAsync
+
+6.2. FILTRARE ȘI CĂUTARE
+
+Filtrare pe Categorie (ExpenseListPage):
+1. Utilizatorul selectează categorie din Picker
+2. OnFilterChanged() este invocat
+3. LINQ query filtrează cheltuielile după categoria selectată
+4. CollectionView se actualizează cu rezultatele
+
+Opțiuni Filtrare:
+- "Toate" - afișează toate cheltuielile
+- Fiecare categorie din baza de date
+
+Performanță:
+- Filtrarea se efectuează pe datele deja încărcate în memorie
+- Nu face apeluri suplimentare la baza de date (LINQ to Objects)
+
+6.3. GESTIONARE BUGETE LUNARE
+
+Setare Buget:
+1. Utilizatorul accesează BudgetPage
+2. Selectează categorie
+3. Introduce suma bugetului
+4. Apasă "Salvează Buget"
+5. Bugetul este stocat cu luna și anul curent
+
+Monitorizare:
+- Aplicația calculează cheltuielile din luna curentă pe categorie
+- Compară cu limita bugetului
+- Afișează procent utilizat
+- Culoare indicator: Verde < 80%, Portocaliu 80-100%, Roșu > 100%
+
+Alertări:
+- Culoare roșu indică depășirea bugetului
+- Utilizatorul trebuie să reduci cheltuielile
+
+6.4. ANALIZĂ STATISTICĂ
+
+Metrici Calculate:
+- Total Lunar: Sum(Expense.Amount) pentru perioada selectată
+- Numărul Cheltuielilor: Count(Expense) pentru perioada
+- Media Zilnică: Total / (Zile din perioadă)
+- Cheltuieli per Categorie: GroupBy(Category).Sum(Amount)
+
+Vizualizare:
+- Cards cu metricile principale
+- ProgressBar pentru distribuția per categorie
+- Procent din total pentru fiecare categorie
+
+Actualizare în Timp Real:
+- La selectare alte date în DatePicker, statisticile se recalculează
+- OnAppearing() reîncarcă datele la accesare paginii
+
+6.5. RAPOARTE PERIODICE
+
+Tipuri de Rapoarte:
+1. Luna Curentă: De la 1 la azi
+2. Luna Trecută: De la 1 la ultima zi a lunii precedente
+3. Ultimele 3 Luni: De 3 luni în urmă la azi
+4. Ultimele 6 Luni: De 6 luni în urmă la azi
+5. Ultimul An: De 1 an în urmă la azi
+
+Informații pe Raport:
+- Total cheltuieli în perioada
+- Numărul de cheltuieli
+- Media zilnică
+- Ziua cu cheltuieli maxime
+- Top 5 categorii cu cheltuieli
+
+Exportare (Future):
+- Funcționalitate de export la PDF sau Excel (placeholder)
+
+6.6. CONVERSIA VALUTELOR
+
+Rate Utilizate:
+- RON (bază de referință)
+- EUR, USD, GBP
+- Rate zilnice din API exchangerate-api.com
+
+Fluxul Conversiei:
+1. GetExchangeRatesAsync() apelează API-ul
+2. Se obțin ratele curente relativă la RON
+3. Conversie: Suma * (Rata Destinație / Rata Sursă)
+4. Rezultat se afișează cu 2 zecimale
+
+Fallback:
+- Dacă API nu e disponibil, se folosesc rate implicite:
+  RON: 1.0, EUR: 0.20, USD: 0.22, GBP: 0.17
+
+================================================================================
+7. FLUXURI DE DATE
+================================================================================
+
+7.1. FLUX DE ADĂUGARE CHELTUIALĂ
+
+┌─────────────────────────────────────────────────────────────┐
+│ Utilizator introduce date în MainPage                       │
+├─────────────────────────────────────────────────────────────┤
+│ OnSaveClicked() event handler                               │
+├─────────────────────────────────────────────────────────────┤
+│ Validare date (descriere, suma, categorie)                 │
+├─────────────────────────────────────────────────────────────┤
+│ Creare obiect Expense cu datele introduse                   │
+├─────────────────────────────────────────────────────────────┤
+│ _databaseService.SaveExpenseAsync(expense)                  │
+├─────────────────────────────────────────────────────────────┤
+│ DatabaseService.InitAsync() - inițializare DB               │
+├─────────────────────────────────────────────────────────────┤
+│ _database.InsertAsync(expense) - inserare în SQLite         │
+├─────────────────────────────────────────────────────────────┤
+│ Returare ID nou generat                                     │
+├─────────────────────────────────────────────────────────────┤
+│ Afișare mesaj "Succes"                                      │
+├─────────────────────────────────────────────────────────────┤
+│ Resetare form                                                │
+└─────────────────────────────────────────────────────────────┘
+
+7.2. FLUX DE ANALIZĂ STATISTICĂ
+
+┌─────────────────────────────────────────────────────────────┐
+│ StatisticsPage.OnAppearing() - pagina e accesată           │
+├─────────────────────────────────────────────────────────────┤
+│ LoadStatistics() - încarcă date din DB                      │
+├─────────────────────────────────────────────────────────────┤
+│ GetExpensesByDateRangeAsync(start, end)                     │
+├─────────────────────────────────────────────────────────────┤
+│ Query: SELECT * FROM Expense WHERE Date BETWEEN start/end   │
+├─────────────────────────────────────────────────────────────┤
+│ Calcul metrici:                                              │
+│ - Total = Sum(Amount)                                       │
+│ - Count = Count()                                           │
+│ - Average = Total / Days                                    │
+│ - GroupBy Category, Sum Amount per Category                │
+├─────────────────────────────────────────────────────────────┤
+│ Creare ViewModels pentru afișare                            │
+├─────────────────────────────────────────────────────────────┤
+│ Set ItemsSource pe CollectionView                           │
+├─────────────────────────────────────────────────────────────┤
+│ UI se actualizează cu datele - ProgressBars se umple        │
+└─────────────────────────────────────────────────────────────┘
+
+7.3. FLUX DE GESTIONARE BUGETE
+
+┌─────────────────────────────────────────────────────────────┐
+│ Utilizator accesează BudgetPage                             │
+├─────────────────────────────────────────────────────────────┤
+│ OnAppearing() apelează LoadBudgets()                        │
+├─────────────────────────────────────────────────────────────┤
+│ GetBudgetsForMonthAsync(month, year) - budgete luna curentă │
+├─────────────────────────────────────────────────────────────┤
+│ Pentru fiecare buget:                                        │
+│ - GetExpensesAsync() - toate cheltuielile                   │
+│ - Filtrare: WHERE Category = budget.Category                │
+│            AND MONTH(Date) = buget.Month                    │
+│ - Sum(Amount) = cheltuieli categoria curentă                │
+├─────────────────────────────────────────────────────────────┤
+│ Calcul progres:                                              │
+│ - Progress = Cheltuieli / MonthlyLimit (maxim 1.0)          │
+│ - Culoare: Verde < 0.8, Portocaliu 0.8-1.0, Roșu > 1.0    │
+├─────────────────────────────────────────────────────────────┤
+│ Creare BudgetViewModel cu datele calculate                  │
+├─────────────────────────────────────────────────────────────┤
+│ UI afișează ProgressBars colorate corespunzător             │
+└─────────────────────────────────────────────────────────────┘
+
+================================================================================
+8. CARACTERISTICI DE SECURITATE
+================================================================================
+
+8.1. VALIDARE DATE
+
+Input Validation - MainPage:
+- Descriere: !string.IsNullOrWhiteSpace(DescriptionEntry.Text)
+- Suma: double.TryParse(AmountEntry.Text, out double amount)
+- Categorie: CategoryPicker.SelectedIndex >= 0
+- Valută: CurrencyPicker.SelectedIndex >= 0
+
+Input Validation - BudgetPage:
+- Categorie: BudgetCategoryPicker.SelectedIndex >= 0
+- Suma: double.TryParse(BudgetEntry.Text, out double amount)
+- Validare: MonthlyLimit > 0
+
+Validări de Integritate:
+- FK constraints între Expense și Category (implicit prin design)
+- Verificare existență categorie înainte de inserare cheltuiala
+
+8.2. GESTIONARE ERORI
+
+Try-Catch Blocks:
+- Toate operațiile async sunt înconjurate cu try-catch
+- Se loghează erori în Debug.WriteLine pentru troubleshooting
+- Utilizatorul e informat prin DisplayAlert
+
+Exemplu:
+try
+{
+    await _databaseService.GetExpensesAsync();
+}
+catch (Exception ex)
+{
+    await DisplayAlert("Eroare", $"Nu s-a putut încărca: {ex.Message}", "OK");
+}
+
+Null Checks:
+- Verificare _database != null înainte de operații
+- Verificare ItemsSource != null înainte de iterații
+- ToString()! cu null-forgiving operator unde e sigur
+
+8.3. CONFIRMĂRI CRITICE
+
+Operații cu Confirmare:
+1. Ștergerea tuturor cheltuielilor (SettingsPage):
+   "Ești sigur că vrei să ștergi toate cheltuielile? Această acțiune nu 
+    poate fi anulată!"
+2. Ștergerea categorie (CategoriesPage):
+   "Sigur vrei să ștergi această categorie?"
+
+Implementare:
+bool confirm = await DisplayAlert("Titlu", "Mesaj", "Da", "Nu");
+if (confirm)
+{
+    // Execută ștergerea
+}
+
+================================================================================
+9. GHID UTILIZATOR
+================================================================================
+
+9.1. PRIMII PAȘI
+
+Lansare Aplicație:
+1. Descarcă și instalează Spending Tracker
+2. La prima lansare, aplicația creeaza baza de date
+3. Sunt preîncărcate 7 categorii implicite
+
+Navigare Meniu:
+1. Glisează din stânga sau apasă butonul meniu
+2. Selectează pagina dorită din lista cu 9 pagini
+
+9.2. OPERAȚII FRECVENTE
+
+Adăugare Cheltuiala:
+1. Accesează "Acasă" din meniu
+2. Introdu descrierea (ex: "Cumpărături Lidl")
+3. Introdu suma (ex: 85.50)
+4. Selectează categoria (ex: "Alimente")
+5. Data e implicit astazi, poți schimba dacă vrei
+6. Selectează valuta (implicit RON)
+7. Apasă "Salvează"
+
+Vizualizare Cheltuieli:
+1. Accesează "Lista Cheltuieli"
+2. Selectează categorie pentru filtrare (optional)
+3. Cheltuielile sunt sortate descrescător după dată
+4. Apasă "Gol" pentru a reseta filtrul
+
+Setare Buget:
+1. Accesează "Bugete"
+2. Selectează categoria
+3. Introdu suma bugetului (ex: 500 RON)
+4. Apasă "Salvează Buget"
+5. Vizualizează bugetele active cu progres
+
+Consultare Statistici:
+1. Accesează "Statistici"
+2. Selectează dată inițială și finală
+3. Vizualizează: Total, Media zilnică, Distribuție categorii
+4. ProgressBar-urile se umple proporțional cu cheltuielile
+
+9.3. INTERPRETARE RAPOARTE
+
+Raport Lunar:
+- "Media Zilnică 45.32 RON" = ai cheltuit în medie 45.32 RON pe zi
+- "Max Zi 152.50 RON" = cea mai scumpă zi a avut 152.50 RON
+- "Top Categorii" = sunt listate categoriile cu cheltuieli maxime
+
+ProgressBar Culori:
+- Verde: Buget utilizat < 80% - Situație bună, mai poți cheltui
+- Portocaliu: Buget utilizat 80-100% - Apropiat de limită
+- Roșu: Buget depășit > 100% - Ai depășit limita, trebuie să reduci
+
+================================================================================
+10. CONCLUZII ȘI PERSPECTIVĂ VIITOARE
+================================================================================
+
+Spending Tracker oferă o soluție completă, ușor de utilizat, pentru gestionarea
+cheltuielilor zilnice. Cu 9 pagini funcționale și bază de date locală, aplicația
+permite utilizatorilor să înțeleagă mai bine obiceiurile lor de cheltuire și să
+stabilească bugete realiste.
+
+Puncte Forte Actuale:
+✓ Interfață intuitivă și ușor de utilizat
+✓ Suport multiplatformă (Android, iOS, Windows, macOS)
+✓ Bază de date locală sigură (SQLite)
+✓ Statistici și rapoarte detaliate
+✓ Gestionare bugete eficientă
+✓ Convertor de valute cu rate în timp real
+✓ Validare riguroasă a datelor
+✓ Cod modular și bine structurat
+
+Funcționalități Viitoare Planificate:
+1. Export rapoarte (PDF, Excel)
+2. Sincronizare cloud (OneDrive, Google Drive)
+3. Notificări de avertizare buget
+4. Grafice avansate cu Microcharts
+5. Backup și restore automat
+6. Sarcini recurente pentru cheltuieli fixe
+7. Colaborare între utilizatori
+8. Predictare cheltuieli pe bază de AI/ML
+9. Notificări push la depășire buget
+10. Integrare cu bănci pentru importare automate
+
+Recomandări de Optimizare:
+- Cache-are date frecvent accesate
+- Paginare pentru liste lungi
+- Search full-text pentru cheltuieli
+- Backup automat zilnic
+- Sincronizare cloud pentru continuitate
+
+Concluzie:
+Spending Tracker este o aplicație de producție, gata pentru utilizare, care
+oferă valoare reală utilizatorilor în gestionarea finanțelor personale. Codul
+este bine structurat, extensibil și ușor de meniținut, permițând adăugări ușoare
+de noi funcționalități în viitor.
+
+================================================================================
+FIN DOCUMENTAȚIE
+================================================================================
+

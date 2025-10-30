@@ -1,0 +1,312 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Spending_Tracker.Pages.StatisticsPage"
+             Title="Statistici"
+             BackgroundColor="#F8F9FA">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="15" Spacing="15">
+            
+            <!-- Header Section -->
+            <Border Padding="20" BackgroundColor="#512BD4" StrokeShape="RoundRectangle 15">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="📊 Statistici Cheltuieli" 
+                           FontSize="22" 
+                           FontAttributes="Bold"
+                           TextColor="White"/>
+                    <Label Text="Analizează și urmărește cheltuielile tale cu ușurință" 
+                           FontSize="12" 
+                           TextColor="#E0E0E0"/>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Period selector with better styling -->
+            <Border Padding="15" StrokeShape="RoundRectangle 12" BackgroundColor="White" Stroke="#E0E0E0" StrokeThickness="1">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Selectează Perioada" 
+                           FontSize="14" 
+                           FontAttributes="Bold"
+                           TextColor="#512BD4"/>
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Border Grid.Column="0" 
+                               Padding="12" 
+                               StrokeShape="RoundRectangle 8" 
+                               BackgroundColor="#F0F0F0">
+                            <DatePicker x:Name="StartDatePicker" 
+                                       DateSelected="OnDateChanged"
+                                       FontSize="12"/>
+                        </Border>
+                        <Border Grid.Column="1" 
+                               Padding="12" 
+                               StrokeShape="RoundRectangle 8" 
+                               BackgroundColor="#F0F0F0">
+                            <DatePicker x:Name="EndDatePicker" 
+                                       DateSelected="OnDateChanged"
+                                       FontSize="12"/>
+                        </Border>
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Summary cards with gradient effect -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                <!-- Total Card -->
+                <Border Grid.Column="0" 
+                       Padding="20" 
+                       StrokeShape="RoundRectangle 12"
+                       BackgroundColor="White"
+                       Stroke="#4ECDC4"
+                       StrokeThickness="2">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="💵 Total" 
+                               TextColor="#4ECDC4" 
+                               FontSize="11"
+                               FontAttributes="Bold"/>
+                        <Label x:Name="TotalExpensesLabel" 
+                               Text="0.00 RON" 
+                               TextColor="#512BD4" 
+                               FontSize="18" 
+                               FontAttributes="Bold"/>
+                        <Label x:Name="PeriodLabel"
+                               Text="Perioada selectată"
+                               TextColor="#999999"
+                               FontSize="9"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Count Card -->
+                <Border Grid.Column="1" 
+                       Padding="20" 
+                       StrokeShape="RoundRectangle 12"
+                       BackgroundColor="White"
+                       Stroke="#FF6B6B"
+                       StrokeThickness="2">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="🧮 Număr" 
+                               TextColor="#FF6B6B" 
+                               FontSize="11"
+                               FontAttributes="Bold"/>
+                        <Label x:Name="CountLabel" 
+                               Text="0" 
+                               TextColor="#512BD4" 
+                               FontSize="18" 
+                               FontAttributes="Bold"/>
+                        <Label Text="tranzacții"
+                               TextColor="#999999"
+                               FontSize="9"/>
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+
+            <!-- Media Card -->
+            <Border Padding="20" 
+                   StrokeShape="RoundRectangle 12"
+                   BackgroundColor="White"
+                   Stroke="#45B7D1"
+                   StrokeThickness="2">
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="15">
+                    <Label Grid.Column="0"
+                          Text="📈"
+                          FontSize="28"
+                          VerticalOptions="Center"/>
+                    <VerticalStackLayout Grid.Column="1" Spacing="6">
+                        <Label Text="Media Zilnică" 
+                              TextColor="#45B7D1" 
+                              FontSize="11"
+                              FontAttributes="Bold"/>
+                        <Label x:Name="AverageLabel" 
+                              Text="0.00 RON" 
+                              TextColor="#512BD4" 
+                              FontSize="18" 
+                              FontAttributes="Bold"/>
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
+
+            <!-- Pie Chart Section -->
+            <Border Padding="20" BackgroundColor="White" StrokeShape="RoundRectangle 12">
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="🎯 Distribuție pe Categorii" 
+                           FontSize="14" 
+                           FontAttributes="Bold"
+                           TextColor="#512BD4"
+                           HorizontalOptions="Center"/>
+                    
+                    <!-- Bar Chart -->
+                    <Border Padding="20" 
+                           StrokeShape="RoundRectangle 10" 
+                           BackgroundColor="#F8F9FA"
+                           Stroke="#E0E0E0"
+                           StrokeThickness="1">
+                        <VerticalStackLayout Spacing="10">
+                            <Label x:Name="ChartStatusLabel"
+                                  Text="Încarcă datele..."
+                                  FontSize="12"
+                                  TextColor="#999999"
+                                  HorizontalOptions="Center"
+                                  Margin="0,0,0,10"/>
+                            
+                            <!-- Bar Chart using CollectionView -->
+                            <CollectionView x:Name="BarChartCollectionView"
+                                           SelectionMode="None"
+                                           HeightRequest="300">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <VerticalStackLayout Spacing="5" Padding="0,8">
+                                            <!-- Category label and amount -->
+                                            <Grid ColumnDefinitions="90,*,80" ColumnSpacing="10">
+                                                <Label Grid.Column="0"
+                                                      Text="{Binding Category}"
+                                                      FontSize="11"
+                                                      FontAttributes="Bold"
+                                                      TextColor="#333333"
+                                                      LineBreakMode="TailTruncation"/>
+                                                <ProgressBar Grid.Column="1"
+                                                           Progress="{Binding Progress}"
+                                                           ProgressColor="{Binding Color}"
+                                                           HeightRequest="25"/>
+                                                <Label Grid.Column="2"
+                                                      Text="{Binding Amount}"
+                                                      FontSize="11"
+                                                      FontAttributes="Bold"
+                                                      TextColor="#512BD4"
+                                                      HorizontalTextAlignment="End"/>
+                                            </Grid>
+                                            <!-- Percentage -->
+                                            <Label Text="{Binding PercentageText}"
+                                                  FontSize="9"
+                                                  TextColor="#999999"
+                                                  Margin="90,0,0,0"/>
+                                        </VerticalStackLayout>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </VerticalStackLayout>
+                    </Border>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Category Breakdown Section -->
+            <Border Padding="20" BackgroundColor="White" StrokeShape="RoundRectangle 12">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="📋 Cheltuieli pe Categorii" 
+                           FontSize="14" 
+                           FontAttributes="Bold"
+                           TextColor="#512BD4"
+                           HorizontalOptions="Start"/>
+                    
+                    <CollectionView x:Name="CategoryCollectionView"
+                                   SelectionMode="None"
+                                   HeightRequest="300">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Border Padding="15" 
+                                       Margin="0,5" 
+                                       StrokeShape="RoundRectangle 10" 
+                                       BackgroundColor="#F8F9FA"
+                                       Stroke="#E0E0E0"
+                                       StrokeThickness="1">
+                                    <VerticalStackLayout Spacing="8">
+                                        <!-- Category Header -->
+                                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                                            <BoxView Grid.Column="0" 
+                                                    Color="{Binding Color}"
+                                                    WidthRequest="25"
+                                                    HeightRequest="25"
+                                                    CornerRadius="12"/>
+                                            <Label Grid.Column="1" 
+                                                  Text="{Binding Category}"
+                                                  VerticalOptions="Center"
+                                                  FontSize="13"
+                                                  FontAttributes="Bold"
+                                                  TextColor="#333333"/>
+                                            <Label Grid.Column="2" 
+                                                  Text="{Binding Amount}"
+                                                  VerticalOptions="Center"
+                                                  FontSize="13"
+                                                  FontAttributes="Bold"
+                                                  TextColor="#512BD4"/>
+                                        </Grid>
+                                        
+                                        <!-- Progress Bar -->
+                                        <ProgressBar Progress="{Binding Progress}"
+                                                   HeightRequest="6"
+                                                   ProgressColor="{Binding Color}"/>
+                                        
+                                        <!-- Percentage Label -->
+                                        <Label x:Name="PercentageLabel"
+                                              Text="{Binding PercentageText}"
+                                              FontSize="10"
+                                              TextColor="#999999"/>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Additional Stats -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                <!-- Max Day Card -->
+                <Border Grid.Column="0" 
+                       Padding="15" 
+                       StrokeShape="RoundRectangle 10"
+                       BackgroundColor="White"
+                       Stroke="#FFA07A"
+                       StrokeThickness="2">
+                    <VerticalStackLayout Spacing="6" HorizontalOptions="Center">
+                        <Label Text="📅 Ziua Max" 
+                              TextColor="#FFA07A" 
+                              FontSize="10"
+                              FontAttributes="Bold"
+                              HorizontalOptions="Center"/>
+                        <Label x:Name="MaxDayLabel" 
+                              Text="0.00" 
+                              TextColor="#512BD4" 
+                              FontSize="14" 
+                              FontAttributes="Bold"
+                              HorizontalOptions="Center"/>
+                        <Label Text="RON"
+                              TextColor="#999999"
+                              FontSize="9"
+                              HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Category Count Card -->
+                <Border Grid.Column="1" 
+                       Padding="15" 
+                       StrokeShape="RoundRectangle 10"
+                       BackgroundColor="White"
+                       Stroke="#98D8C8"
+                       StrokeThickness="2">
+                    <VerticalStackLayout Spacing="6" HorizontalOptions="Center">
+                        <Label Text="🏷️ Categorii" 
+                              TextColor="#98D8C8" 
+                              FontSize="10"
+                              FontAttributes="Bold"
+                              HorizontalOptions="Center"/>
+                        <Label x:Name="CategoriesCountLabel" 
+                              Text="0" 
+                              TextColor="#512BD4" 
+                              FontSize="14" 
+                              FontAttributes="Bold"
+                              HorizontalOptions="Center"/>
+                        <Label Text="active"
+                              TextColor="#999999"
+                              FontSize="9"
+                              HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+
+            <!-- Footer Spacing -->
+            <BoxView HeightRequest="20" BackgroundColor="Transparent"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
+

@@ -1,0 +1,103 @@
+is_global = true
+build_property.EnableAotAnalyzer = 
+build_property.EnableSingleFileAnalyzer = 
+build_property.EnableTrimAnalyzer = false
+build_property.IncludeAllContentForSelfExtract = 
+build_property.TargetFramework = net9.0-maccatalyst
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = false
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = Spending_Tracker
+build_property.ProjectDir = C:\Users\Stefan\RiderProjects\Spending Tracker\Spending Tracker\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.EffectiveAnalysisLevelStyle = 9.0
+build_property.EnableCodeStyleSeverity = 
+
+[C:/Users/Stefan/RiderProjects/Spending Tracker/Spending Tracker/App.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = Spending_Tracker.App.xaml
+build_metadata.AdditionalFiles.TargetPath = App.xaml
+build_metadata.AdditionalFiles.RelativePath = App.xaml
+
+[C:/Users/Stefan/RiderProjects/Spending Tracker/Spending Tracker/AppShell.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = Spending_Tracker.AppShell.xaml
+build_metadata.AdditionalFiles.TargetPath = AppShell.xaml
+build_metadata.AdditionalFiles.RelativePath = AppShell.xaml
+
+[C:/Users/Stefan/RiderProjects/Spending Tracker/Spending Tracker/MainPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = Spending_Tracker.MainPage.xaml
+build_metadata.AdditionalFiles.TargetPath = MainPage.xaml
+build_metadata.AdditionalFiles.RelativePath = MainPage.xaml
+
+[C:/Users/Stefan/RiderProjects/Spending Tracker/Spending Tracker/Pages/AboutPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = Spending_Tracker.Pages.AboutPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Pages\AboutPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Pages\AboutPage.xaml
+
+[C:/Users/Stefan/RiderProjects/Spending Tracker/Spending Tracker/Pages/AddEditExpensePage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = Spending_Tracker.Pages.AddEditExpensePage.xaml
+build_metadata.AdditionalFiles.TargetPath = Pages\AddEditExpensePage.xaml
+build_metadata.AdditionalFiles.RelativePath = Pages\AddEditExpensePage.xaml
+
+[C:/Users/Stefan/RiderProjects/Spending Tracker/Spending Tracker/Pages/BudgetPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = Spending_Tracker.Pages.BudgetPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Pages\BudgetPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Pages\BudgetPage.xaml
+
+[C:/Users/Stefan/RiderProjects/Spending Tracker/Spending Tracker/Pages/CategoriesPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = Spending_Tracker.Pages.CategoriesPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Pages\CategoriesPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Pages\CategoriesPage.xaml
+
+[C:/Users/Stefan/RiderProjects/Spending Tracker/Spending Tracker/Pages/CurrencyConverterPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = Spending_Tracker.Pages.CurrencyConverterPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Pages\CurrencyConverterPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Pages\CurrencyConverterPage.xaml
+
+[C:/Users/Stefan/RiderProjects/Spending Tracker/Spending Tracker/Pages/ExpenseListPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = Spending_Tracker.Pages.ExpenseListPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Pages\ExpenseListPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Pages\ExpenseListPage.xaml
+
+[C:/Users/Stefan/RiderProjects/Spending Tracker/Spending Tracker/Pages/ReportsPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = Spending_Tracker.Pages.ReportsPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Pages\ReportsPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Pages\ReportsPage.xaml
+
+[C:/Users/Stefan/RiderProjects/Spending Tracker/Spending Tracker/Pages/SettingsPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = Spending_Tracker.Pages.SettingsPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Pages\SettingsPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Pages\SettingsPage.xaml
+
+[C:/Users/Stefan/RiderProjects/Spending Tracker/Spending Tracker/Pages/StatisticsPage.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = Spending_Tracker.Pages.StatisticsPage.xaml
+build_metadata.AdditionalFiles.TargetPath = Pages\StatisticsPage.xaml
+build_metadata.AdditionalFiles.RelativePath = Pages\StatisticsPage.xaml
+
+[C:/Users/Stefan/RiderProjects/Spending Tracker/Spending Tracker/Resources/Styles/Colors.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = Spending_Tracker.Resources.Styles.Colors.xaml
+build_metadata.AdditionalFiles.TargetPath = Resources\Styles\Colors.xaml
+build_metadata.AdditionalFiles.RelativePath = Resources\Styles\Colors.xaml
+
+[C:/Users/Stefan/RiderProjects/Spending Tracker/Spending Tracker/Resources/Styles/Styles.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = Spending_Tracker.Resources.Styles.Styles.xaml
+build_metadata.AdditionalFiles.TargetPath = Resources\Styles\Styles.xaml
+build_metadata.AdditionalFiles.RelativePath = Resources\Styles\Styles.xaml

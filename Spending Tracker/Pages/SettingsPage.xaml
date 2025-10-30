@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Spending_Tracker.Pages.SettingsPage"
+             Title="Setări">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+            
+            <Label Text="Setări și Bugete" 
+                   FontSize="24" 
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"/>
+
+            <!-- App info -->
+            <Frame Padding="15" CornerRadius="10" BackgroundColor="#512BD4">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Jurnal de Cheltuieli Personale" 
+                           TextColor="White"
+                           FontSize="20" 
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"/>
+                    <Label Text="Versiunea 1.0" 
+                           TextColor="White"
+                           FontSize="12" 
+                           HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Monthly budget -->
+            <Frame Padding="15" CornerRadius="10">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Buget Lunar pe Categorii" 
+                           FontSize="18" 
+                           FontAttributes="Bold"/>
+                    
+                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                        <Picker x:Name="BudgetCategoryPicker" 
+                                Grid.Column="0"
+                                Title="Selectează categoria"/>
+                        <Entry x:Name="BudgetAmountEntry" 
+                               Grid.Column="1"
+                               Placeholder="Sumă"
+                               Keyboard="Numeric"
+                               WidthRequest="100"/>
+                    </Grid>
+                    
+                    <Button Text="Salvează Buget"
+                            Clicked="OnSaveBudgetClicked"
+                            BackgroundColor="#4ECDC4"
+                            TextColor="White"
+                            CornerRadius="10"/>
+
+                    <BoxView HeightRequest="1" Color="LightGray" Margin="0,10"/>
+
+                    <Label Text="Bugete Curente:" FontSize="14" FontAttributes="Bold"/>
+                    <CollectionView x:Name="BudgetsCollectionView"
+                                   SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="5" ColumnDefinitions="*,Auto">
+                                    <Label Grid.Column="0" 
+                                          Text="{Binding CategoryName}"
+                                          VerticalOptions="Center"/>
+                                    <Label Grid.Column="1" 
+                                          Text="{Binding LimitDisplay}"
+                                          VerticalOptions="Center"
+                                          FontAttributes="Bold"
+                                          TextColor="#512BD4"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Categories management -->
+            <Frame Padding="15" CornerRadius="10">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Gestionare Categorii" 
+                           FontSize="18" 
+                           FontAttributes="Bold"/>
+                    
+                    <TableView Intent="Settings" HeightRequest="250">
+                        <TableRoot>
+                            <TableSection Title="Categorii Disponibile">
+                                <ViewCell>
+                                    <StackLayout Orientation="Horizontal" Padding="10">
+                                        <BoxView Color="#FF6B6B" WidthRequest="20" HeightRequest="20" CornerRadius="10"/>
+                                        <Label Text="Alimente" VerticalOptions="Center" Margin="10,0"/>
+                                    </StackLayout>
+                                </ViewCell>
+                                <ViewCell>
+                                    <StackLayout Orientation="Horizontal" Padding="10">
+                                        <BoxView Color="#4ECDC4" WidthRequest="20" HeightRequest="20" CornerRadius="10"/>
+                                        <Label Text="Transport" VerticalOptions="Center" Margin="10,0"/>
+                                    </StackLayout>
+                                </ViewCell>
+                                <ViewCell>
+                                    <StackLayout Orientation="Horizontal" Padding="10">
+                                        <BoxView Color="#45B7D1" WidthRequest="20" HeightRequest="20" CornerRadius="10"/>
+                                        <Label Text="Divertisment" VerticalOptions="Center" Margin="10,0"/>
+                                    </StackLayout>
+                                </ViewCell>
+                                <ViewCell>
+                                    <StackLayout Orientation="Horizontal" Padding="10">
+                                        <BoxView Color="#FFA07A" WidthRequest="20" HeightRequest="20" CornerRadius="10"/>
+                                        <Label Text="Utilități" VerticalOptions="Center" Margin="10,0"/>
+                                    </StackLayout>
+                                </ViewCell>
+                            </TableSection>
+                        </TableRoot>
+                    </TableView>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Statistics summary -->
+            <Frame Padding="15" CornerRadius="10" BackgroundColor="#F0F0F0">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Rezumat Bază de Date" 
+                           FontSize="16" 
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"/>
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Frame Grid.Column="0" Padding="10" CornerRadius="10" BackgroundColor="White">
+                            <VerticalStackLayout>
+                                <Label Text="Total Cheltuieli" FontSize="12" HorizontalOptions="Center"/>
+                                <Label x:Name="TotalExpensesCountLabel" 
+                                       Text="0" 
+                                       FontSize="24" 
+                                       FontAttributes="Bold"
+                                       HorizontalOptions="Center"
+                                       TextColor="#512BD4"/>
+                            </VerticalStackLayout>
+                        </Frame>
+                        <Frame Grid.Column="1" Padding="10" CornerRadius="10" BackgroundColor="White">
+                            <VerticalStackLayout>
+                                <Label Text="Categorii" FontSize="12" HorizontalOptions="Center"/>
+                                <Label x:Name="CategoriesCountLabel" 
+                                       Text="0" 
+                                       FontSize="24" 
+                                       FontAttributes="Bold"
+                                       HorizontalOptions="Center"
+                                       TextColor="#4ECDC4"/>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Clear data button -->
+            <Button Text="Șterge Toate Datele"
+                    Clicked="OnClearDataClicked"
+                    BackgroundColor="#FF6B6B"
+                    TextColor="White"
+                    CornerRadius="10"
+                    Margin="0,20,0,0"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
+
