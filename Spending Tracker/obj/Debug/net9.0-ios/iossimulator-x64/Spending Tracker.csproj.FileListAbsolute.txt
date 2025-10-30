@@ -310,3 +310,6 @@ C:\Users\Stefan\RiderProjects\Spending Tracker\Spending Tracker\bin\Debug\net9.0
 C:\Users\Stefan\RiderProjects\Spending Tracker\Spending Tracker\bin\Debug\net9.0-ios\iossimulator-x64\SQLitePCLRaw.batteries_v2.dll
 C:\Users\Stefan\RiderProjects\Spending Tracker\Spending Tracker\bin\Debug\net9.0-ios\iossimulator-x64\SQLitePCLRaw.core.dll
 C:\Users\Stefan\RiderProjects\Spending Tracker\Spending Tracker\bin\Debug\net9.0-ios\iossimulator-x64\SQLitePCLRaw.provider.sqlite3.dll
+C:\Users\Stefan\RiderProjects\Spending Tracker\Spending Tracker\obj\Debug\net9.0-ios\iossimulator-x64\Spending Tracker.sourcelink.json
+C:\Users\Stefan\RiderProjects\Spending Tracker\Spending Tracker\obj\Debug\net9.0-ios\iossimulator-x64\resizetizer\r\Resources\money_bag.png
+C:\Users\Stefan\RiderProjects\Spending Tracker\Spending Tracker\obj\Debug\net9.0-ios\iossimulator-x64\resizetizer\r\Resources\money.png

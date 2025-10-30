@@ -9,6 +9,10 @@
             
             <!-- App Header -->
             <VerticalStackLayout HorizontalOptions="Center" Spacing="10">
+                <Image Source="money_bag.png"
+                       HeightRequest="120"
+                       Aspect="AspectFit"
+                       Margin="0,0,0,10"/>
                 <Label Text="💰 Spending Tracker" 
                        FontSize="28" 
                        FontAttributes="Bold"

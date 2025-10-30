@@ -8,18 +8,26 @@
         
         <!-- Header with total -->
         <Frame Grid.Row="0" BackgroundColor="#512BD4" Padding="20" Margin="5" CornerRadius="10">
-            <VerticalStackLayout>
-                <Label Text="Total Cheltuieli Luna Curentă" 
-                       TextColor="White" 
-                       FontSize="16" 
-                       HorizontalOptions="Center"/>
-                <Label x:Name="TotalLabel" 
-                       Text="0.00 RON" 
-                       TextColor="White" 
-                       FontSize="32" 
-                       FontAttributes="Bold"
-                       HorizontalOptions="Center"/>
-            </VerticalStackLayout>
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="15">
+                <Image Grid.Column="0"
+                       Source="money_bag.png"
+                       HeightRequest="60"
+                       WidthRequest="60"
+                       Aspect="AspectFit"
+                       VerticalOptions="Center"/>
+                <VerticalStackLayout Grid.Column="1">
+                    <Label Text="Total Cheltuieli Luna Curentă" 
+                           TextColor="White" 
+                           FontSize="16" 
+                           HorizontalOptions="Center"/>
+                    <Label x:Name="TotalLabel" 
+                           Text="0.00 RON" 
+                           TextColor="White" 
+                           FontSize="32" 
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+            </Grid>
         </Frame>
 
         <!-- Filter controls -->

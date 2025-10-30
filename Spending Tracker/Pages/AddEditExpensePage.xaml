@@ -73,9 +73,9 @@
                 </VerticalStackLayout>
             </Frame>
 
-            <!-- Image display -->
+            <!-- Expense Icon -->
             <Image x:Name="ExpenseImage"
-                   Source="dotnet_bot.png"
+                   Source="money_bag.png"
                    HeightRequest="100"
                    Aspect="AspectFit"
                    Margin="0,10"/>

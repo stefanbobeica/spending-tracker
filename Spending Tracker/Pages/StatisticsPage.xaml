@@ -10,15 +10,23 @@
             
             <!-- Header Section -->
             <Border Padding="20" BackgroundColor="#512BD4" StrokeShape="RoundRectangle 15">
-                <VerticalStackLayout Spacing="8">
-                    <Label Text="📊 Statistici Cheltuieli" 
-                           FontSize="22" 
-                           FontAttributes="Bold"
-                           TextColor="White"/>
-                    <Label Text="Analizează și urmărește cheltuielile tale cu ușurință" 
-                           FontSize="12" 
-                           TextColor="#E0E0E0"/>
-                </VerticalStackLayout>
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="15">
+                    <Image Grid.Column="0"
+                           Source="money.png"
+                           HeightRequest="50"
+                           WidthRequest="50"
+                           Aspect="AspectFit"
+                           VerticalOptions="Center"/>
+                    <VerticalStackLayout Grid.Column="1" Spacing="8">
+                        <Label Text="📊 Statistici Cheltuieli" 
+                               FontSize="22" 
+                               FontAttributes="Bold"
+                               TextColor="White"/>
+                        <Label Text="Analizează și urmărește cheltuielile tale cu ușurință" 
+                               FontSize="12" 
+                               TextColor="#E0E0E0"/>
+                    </VerticalStackLayout>
+                </Grid>
             </Border>
 
             <!-- Period selector with better styling -->

@@ -519,3 +519,8 @@ C:\Users\Stefan\RiderProjects\Spending Tracker\Spending Tracker\bin\Debug\net9.0
 C:\Users\Stefan\RiderProjects\Spending Tracker\Spending Tracker\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\SQLitePCLRaw.core.dll
 C:\Users\Stefan\RiderProjects\Spending Tracker\Spending Tracker\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\SQLitePCLRaw.provider.e_sqlite3.dll
 C:\Users\Stefan\RiderProjects\Spending Tracker\Spending Tracker\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\e_sqlite3.dll
+C:\Users\Stefan\RiderProjects\Spending Tracker\Spending Tracker\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\Spending Tracker.sourcelink.json
+C:\Users\Stefan\RiderProjects\Spending Tracker\Spending Tracker\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\money_bag.scale-100.png
+C:\Users\Stefan\RiderProjects\Spending Tracker\Spending Tracker\bin\Debug\net9.0-windows10.0.19041.0\win10-x64\money.scale-100.png
+C:\Users\Stefan\RiderProjects\Spending Tracker\Spending Tracker\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\resizetizer\r\money_bag.scale-100.png
+C:\Users\Stefan\RiderProjects\Spending Tracker\Spending Tracker\obj\Debug\net9.0-windows10.0.19041.0\win10-x64\resizetizer\r\money.scale-100.png
