@@ -20,6 +20,7 @@ public static class MauiProgram
         // Register services
         builder.Services.AddSingleton<DatabaseService>();
         builder.Services.AddSingleton<CurrencyService>();
+        builder.Services.AddSingleton<PdfReportService>();
 
         // Register pages
         builder.Services.AddTransient<MainPage>();

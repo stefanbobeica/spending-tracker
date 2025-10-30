@@ -6,11 +6,13 @@ namespace Spending_Tracker.Pages;
 public partial class ReportsPage
 {
     private readonly DatabaseService _databaseService;
+    private readonly PdfReportService _pdfReportService;
 
     public ReportsPage()
     {
         InitializeComponent();
         _databaseService = new DatabaseService();
+        _pdfReportService = new PdfReportService(_databaseService);
         PeriodPicker.SelectedIndexChanged += OnPeriodChanged;
     }
 
@@ -104,11 +106,6 @@ public partial class ReportsPage
             4 => (today.AddYears(-1), today), // Last year
             _ => (new DateTime(today.Year, today.Month, 1), today)
         };
-    }
-
-    private async void OnExportClicked(object? sender, EventArgs e)
-    {
-        await DisplayAlert("Info", "Funcționalitate de export va fi adăugată în viitoarea versiune", "OK");
     }
 }
 

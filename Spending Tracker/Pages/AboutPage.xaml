@@ -2,104 +2,210 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Spending_Tracker.Pages.AboutPage"
-             Title="Despre">
+             Title="Despre"
+             BackgroundColor="#F5F7FA">
 
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="20">
+        <VerticalStackLayout Padding="20" Spacing="24">
             
-            <!-- App Header -->
-            <VerticalStackLayout HorizontalOptions="Center" Spacing="10">
-                <Image Source="money_bag.png"
-                       HeightRequest="120"
-                       Aspect="AspectFit"
-                       Margin="0,0,0,10"/>
-                <Label Text="💰 Spending Tracker" 
-                       FontSize="28" 
+            <!-- Modern App Header -->
+            <Border StrokeShape="RoundRectangle 24"
+                    Stroke="Transparent"
+                    Shadow="{Shadow Brush=#40000000, Offset='0,4', Radius=16, Opacity=0.3}">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#6366F1" Offset="0.0" />
+                        <GradientStop Color="#8B5CF6" Offset="1.0" />
+                    </LinearGradientBrush>
+                </Border.Background>
+                <VerticalStackLayout HorizontalOptions="Center" Spacing="12" Padding="32">
+                    <Image Source="money_bag.png"
+                           HeightRequest="100"
+                           Aspect="AspectFit"/>
+                    <Label Text="💰 Spending Tracker" 
+                           FontSize="28" 
+                           FontAttributes="Bold"
+                           TextColor="White"
+                           HorizontalOptions="Center"/>
+                    <Border StrokeShape="RoundRectangle 12"
+                            BackgroundColor="#FFFFFF30"
+                            Padding="12,6"
+                            HorizontalOptions="Center">
+                        <Label Text="v1.0.0" 
+                               FontSize="13" 
+                               TextColor="White"
+                               FontAttributes="Bold"/>
+                    </Border>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Modern Description Card -->
+            <Border StrokeShape="RoundRectangle 20"
+                    BackgroundColor="White"
+                    Stroke="#E5E7EB"
+                    StrokeThickness="1"
+                    Padding="20"
+                    Shadow="{Shadow Brush=#15000000, Offset='0,2', Radius=12, Opacity=0.12}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="📖 Descriere" 
+                           FontSize="17" 
+                           FontAttributes="Bold"
+                           TextColor="#1F2937"/>
+                    <Label Text="Spending Tracker este o aplicație simplă și eficientă pentru gestionarea cheltuielilor zilnice. Urmărire facilă a cheltuielilor, categorisare automată și rapoarte detaliate pentru a-ți controla bugetul."
+                           FontSize="14"
+                           LineBreakMode="WordWrap"
+                           TextColor="#6B7280"
+                           LineHeight="1.5"/>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Modern Features Section -->
+            <VerticalStackLayout Spacing="12">
+                <Label Text="✨ Funcționalități Principale" 
+                       FontSize="18" 
                        FontAttributes="Bold"
-                       HorizontalOptions="Center"/>
-                <Label Text="v1.0.0" 
-                       FontSize="14" 
-                       TextColor="Gray"
-                       HorizontalOptions="Center"/>
+                       TextColor="#1F2937"/>
+                
+                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="12" RowSpacing="12">
+                    <Border Grid.Row="0" Grid.Column="0"
+                            StrokeShape="RoundRectangle 16"
+                            BackgroundColor="White"
+                            Stroke="#E5E7EB"
+                            StrokeThickness="1"
+                            Padding="16"
+                            Shadow="{Shadow Brush=#10000000, Offset='0,2', Radius=8, Opacity=0.1}">
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="⚡" FontSize="28" HorizontalOptions="Start"/>
+                            <Label Text="Adăugare Rapidă" FontSize="13" FontAttributes="Bold" TextColor="#1F2937"/>
+                            <Label Text="Cheltuieli în secunde" FontSize="11" TextColor="#6B7280" LineBreakMode="WordWrap"/>
+                        </VerticalStackLayout>
+                    </Border>
+                    
+                    <Border Grid.Row="0" Grid.Column="1"
+                            StrokeShape="RoundRectangle 16"
+                            BackgroundColor="White"
+                            Stroke="#E5E7EB"
+                            StrokeThickness="1"
+                            Padding="16"
+                            Shadow="{Shadow Brush=#10000000, Offset='0,2', Radius=8, Opacity=0.1}">
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="📊" FontSize="28" HorizontalOptions="Start"/>
+                            <Label Text="Statistici Live" FontSize="13" FontAttributes="Bold" TextColor="#1F2937"/>
+                            <Label Text="Urmărire în timp real" FontSize="11" TextColor="#6B7280" LineBreakMode="WordWrap"/>
+                        </VerticalStackLayout>
+                    </Border>
+                    
+                    <Border Grid.Row="1" Grid.Column="0"
+                            StrokeShape="RoundRectangle 16"
+                            BackgroundColor="White"
+                            Stroke="#E5E7EB"
+                            StrokeThickness="1"
+                            Padding="16"
+                            Shadow="{Shadow Brush=#10000000, Offset='0,2', Radius=8, Opacity=0.1}">
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="💼" FontSize="28" HorizontalOptions="Start"/>
+                            <Label Text="Bugete Smart" FontSize="13" FontAttributes="Bold" TextColor="#1F2937"/>
+                            <Label Text="Planificare eficientă" FontSize="11" TextColor="#6B7280" LineBreakMode="WordWrap"/>
+                        </VerticalStackLayout>
+                    </Border>
+                    
+                    <Border Grid.Row="1" Grid.Column="1"
+                            StrokeShape="RoundRectangle 16"
+                            BackgroundColor="White"
+                            Stroke="#E5E7EB"
+                            StrokeThickness="1"
+                            Padding="16"
+                            Shadow="{Shadow Brush=#10000000, Offset='0,2', Radius=8, Opacity=0.1}">
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="💱" FontSize="28" HorizontalOptions="Start"/>
+                            <Label Text="Convertor Live" FontSize="13" FontAttributes="Bold" TextColor="#1F2937"/>
+                            <Label Text="Rate actuale" FontSize="11" TextColor="#6B7280" LineBreakMode="WordWrap"/>
+                        </VerticalStackLayout>
+                    </Border>
+                </Grid>
             </VerticalStackLayout>
 
-            <!-- Description -->
-            <Border Padding="15" StrokeShape="RoundRectangle 10" BackgroundColor="#F0F0F0">
-                <VerticalStackLayout Spacing="10">
-                    <Label Text="Descriere" 
+            <!-- Modern How to Use -->
+            <Border StrokeShape="RoundRectangle 20"
+                    BackgroundColor="White"
+                    Stroke="#E5E7EB"
+                    StrokeThickness="1"
+                    Padding="20"
+                    Shadow="{Shadow Brush=#15000000, Offset='0,2', Radius=12, Opacity=0.12}">
+                <VerticalStackLayout Spacing="16">
+                    <Label Text="🚀 Cum să Utilizezi" 
+                           FontSize="17" 
+                           FontAttributes="Bold"
+                           TextColor="#1F2937"/>
+                    
+                    <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="12" RowSpacing="12">
+                        <Border Grid.Row="0" Grid.Column="0"
+                                StrokeShape="RoundRectangle 8"
+                                BackgroundColor="#6366F1"
+                                WidthRequest="28" HeightRequest="28">
+                            <Label Text="1" TextColor="White" FontSize="13" FontAttributes="Bold" 
+                                   HorizontalOptions="Center" VerticalOptions="Center"/>
+                        </Border>
+                        <Label Grid.Row="0" Grid.Column="1"
+                               Text="Adaugă cheltuielile zilnice cu detalii complete"
+                               FontSize="13" TextColor="#6B7280" VerticalOptions="Center" LineBreakMode="WordWrap"/>
+                        
+                        <Border Grid.Row="1" Grid.Column="0"
+                                StrokeShape="RoundRectangle 8"
+                                BackgroundColor="#8B5CF6"
+                                WidthRequest="28" HeightRequest="28">
+                            <Label Text="2" TextColor="White" FontSize="13" FontAttributes="Bold" 
+                                   HorizontalOptions="Center" VerticalOptions="Center"/>
+                        </Border>
+                        <Label Grid.Row="1" Grid.Column="1"
+                               Text="Setează bugete lunare pentru fiecare categorie"
+                               FontSize="13" TextColor="#6B7280" VerticalOptions="Center" LineBreakMode="WordWrap"/>
+                        
+                        <Border Grid.Row="2" Grid.Column="0"
+                                StrokeShape="RoundRectangle 8"
+                                BackgroundColor="#10B981"
+                                WidthRequest="28" HeightRequest="28">
+                            <Label Text="3" TextColor="White" FontSize="13" FontAttributes="Bold" 
+                                   HorizontalOptions="Center" VerticalOptions="Center"/>
+                        </Border>
+                        <Label Grid.Row="2" Grid.Column="1"
+                               Text="Consultă statisticile pentru a-ți monitoriza cheltuielile"
+                               FontSize="13" TextColor="#6B7280" VerticalOptions="Center" LineBreakMode="WordWrap"/>
+                        
+                        <Border Grid.Row="3" Grid.Column="0"
+                                StrokeShape="RoundRectangle 8"
+                                BackgroundColor="#F59E0B"
+                                WidthRequest="28" HeightRequest="28">
+                            <Label Text="4" TextColor="White" FontSize="13" FontAttributes="Bold" 
+                                   HorizontalOptions="Center" VerticalOptions="Center"/>
+                        </Border>
+                        <Label Grid.Row="3" Grid.Column="1"
+                               Text="Gestionează categoriile după nevoile tale"
+                               FontSize="13" TextColor="#6B7280" VerticalOptions="Center" LineBreakMode="WordWrap"/>
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Modern Tip Card -->
+            <Border StrokeShape="RoundRectangle 20"
+                    Stroke="Transparent"
+                    Shadow="{Shadow Brush=#30EF4444, Offset='0,2', Radius=12, Opacity=0.2}">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="#FEF3C7" Offset="0.0" />
+                        <GradientStop Color="#FDE68A" Offset="1.0" />
+                    </LinearGradientBrush>
+                </Border.Background>
+                <VerticalStackLayout Spacing="10" Padding="20">
+                    <Label Text="💡 Sfat Pro" 
                            FontSize="16" 
-                           FontAttributes="Bold"/>
-                    <Label Text="Spending Tracker este o aplicație simplă și eficientă pentru gestionarea cheltuielilor zilnice. Urmărire facilă a cheltuielilor, categorisare automată și rapoarte detaliate pentru a-ți controla bugetul."
+                           FontAttributes="Bold"
+                           TextColor="#92400E"/>
+                    <Label Text="Introdu zilnic cheltuielile pentru rapoarte mai precise și o mai bună înțelegere a obiceiurilor tale de cheltuieli."
                            FontSize="13"
                            LineBreakMode="WordWrap"
-                           TextColor="#333333"/>
-                </VerticalStackLayout>
-            </Border>
-
-            <!-- Features -->
-            <VerticalStackLayout Spacing="10">
-                <Label Text="Funcționalități" 
-                       FontSize="16" 
-                       FontAttributes="Bold"/>
-                
-                <Border Padding="12" StrokeShape="RoundRectangle 8" BackgroundColor="White" Stroke="#E0E0E0">
-                    <Label Text="✓ Adăugare și editare cheltuieli rapid"
-                           FontSize="12"/>
-                </Border>
-                <Border Padding="12" StrokeShape="RoundRectangle 8" BackgroundColor="White" Stroke="#E0E0E0">
-                    <Label Text="✓ Categorisare automată"
-                           FontSize="12"/>
-                </Border>
-                <Border Padding="12" StrokeShape="RoundRectangle 8" BackgroundColor="White" Stroke="#E0E0E0">
-                    <Label Text="✓ Gestionare bugete lunare"
-                           FontSize="12"/>
-                </Border>
-                <Border Padding="12" StrokeShape="RoundRectangle 8" BackgroundColor="White" Stroke="#E0E0E0">
-                    <Label Text="✓ Statistici detaliate și rapoarte"
-                           FontSize="12"/>
-                </Border>
-                <Border Padding="12" StrokeShape="RoundRectangle 8" BackgroundColor="White" Stroke="#E0E0E0">
-                    <Label Text="✓ Convertor de monede în timp real"
-                           FontSize="12"/>
-                </Border>
-                <Border Padding="12" StrokeShape="RoundRectangle 8" BackgroundColor="White" Stroke="#E0E0E0">
-                    <Label Text="✓ Vedere completă a tuturor cheltuielilor"
-                           FontSize="12"/>
-                </Border>
-            </VerticalStackLayout>
-
-            <!-- How to Use -->
-            <Border Padding="15" StrokeShape="RoundRectangle 10" BackgroundColor="#F0F0F0">
-                <VerticalStackLayout Spacing="10">
-                    <Label Text="Cum să utilizezi" 
-                           FontSize="16" 
-                           FontAttributes="Bold"/>
-                    <Label Text="1. Adaugă cheltuielile zilnice cu detalii complete"
-                           FontSize="12"
-                           LineBreakMode="WordWrap"/>
-                    <Label Text="2. Setează bugete lunare pentru fiecare categorie"
-                           FontSize="12"
-                           LineBreakMode="WordWrap"/>
-                    <Label Text="3. Consultă statisticile pentru a-ți monitoriza cheltuielile"
-                           FontSize="12"
-                           LineBreakMode="WordWrap"/>
-                    <Label Text="4. Gestionează categoriile după nevoie"
-                           FontSize="12"
-                           LineBreakMode="WordWrap"/>
-                </VerticalStackLayout>
-            </Border>
-
-            <!-- Tips -->
-            <Border Padding="15" StrokeShape="RoundRectangle 10" BackgroundColor="#FFE5E5">
-                <VerticalStackLayout Spacing="8">
-                    <Label Text="💡 Sfat" 
-                           FontSize="14" 
-                           FontAttributes="Bold"
-                           TextColor="#FF6B6B"/>
-                    <Label Text="Introdu zilnic cheltuielile pentru rapoarte mai precise și o mai bună înțelegere a obiceiurilor tale de cheltuieli."
-                           FontSize="12"
-                           LineBreakMode="WordWrap"
-                           TextColor="#333333"/>
+                           TextColor="#78350F"
+                           LineHeight="1.5"/>
                 </VerticalStackLayout>
             </Border>
 
