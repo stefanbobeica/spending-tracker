@@ -1,4 +1,4 @@
-﻿using Spending_Tracker.Models;
+﻿﻿using Spending_Tracker.Models;
 using Spending_Tracker.Services;
 using Spending_Tracker.Pages;
 
@@ -7,6 +7,7 @@ namespace Spending_Tracker;
 public partial class MainPage : ContentPage
 {
     private readonly DatabaseService _databaseService;
+    private readonly CurrencyService _currencyService;
     private List<ExpenseViewModel> _allExpenses = new();
     private List<string> _categories = new();
 
@@ -14,10 +15,26 @@ public partial class MainPage : ContentPage
     {
         InitializeComponent();
         _databaseService = new DatabaseService();
+        _currencyService = new CurrencyService();
         
         var startOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         StartDatePicker.Date = startOfMonth;
         EndDatePicker.Date = DateTime.Now;
+    }
+    
+    private async Task<double> ConvertToRonAsync(double amount, string currency)
+    {
+        if (currency == "RON")
+            return amount;
+            
+        var rates = await _currencyService.GetExchangeRatesAsync();
+        
+        if (rates.ContainsKey(currency) && rates[currency] > 0)
+        {
+            return amount / rates[currency];
+        }
+        
+        return amount;
     }
 
     protected override async void OnAppearing()
@@ -57,7 +74,7 @@ public partial class MainPage : ContentPage
         ApplyFilter();
     }
 
-    private void ApplyFilter()
+    private async void ApplyFilter()
     {
         var filtered = _allExpenses.AsEnumerable();
 
@@ -70,7 +87,14 @@ public partial class MainPage : ContentPage
         var filteredList = filtered.ToList();
         ExpensesListView.ItemsSource = filteredList;
 
-        var total = filteredList.Sum(e => e.Expense.Amount);
+        // Convert all amounts to RON before summing
+        double total = 0;
+        foreach (var expenseVm in filteredList)
+        {
+            var amountInRon = await ConvertToRonAsync(expenseVm.Expense.Amount, expenseVm.Expense.Currency);
+            total += amountInRon;
+        }
+        
         TotalLabel.Text = $"{total:F2} RON";
     }
 

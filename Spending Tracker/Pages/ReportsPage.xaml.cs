@@ -7,13 +7,30 @@ public partial class ReportsPage
 {
     private readonly DatabaseService _databaseService;
     private readonly PdfReportService _pdfReportService;
+    private readonly CurrencyService _currencyService;
 
     public ReportsPage()
     {
         InitializeComponent();
         _databaseService = new DatabaseService();
         _pdfReportService = new PdfReportService(_databaseService);
+        _currencyService = new CurrencyService();
         PeriodPicker.SelectedIndexChanged += OnPeriodChanged;
+    }
+    
+    private async Task<double> ConvertToRonAsync(double amount, string currency)
+    {
+        if (currency == "RON")
+            return amount;
+            
+        var rates = await _currencyService.GetExchangeRatesAsync();
+        
+        if (rates.ContainsKey(currency) && rates[currency] > 0)
+        {
+            return amount / rates[currency];
+        }
+        
+        return amount;
     }
 
     protected override async void OnAppearing()
@@ -45,16 +62,24 @@ public partial class ReportsPage
                 return;
             }
 
-            // Summary calculations
-            var total = expenses.Sum(e => e.Amount);
+            // Convert all amounts to RON
+            var expensesInRon = new List<(Expense expense, double amountInRon)>();
+            foreach (var expense in expenses)
+            {
+                var amountInRon = await ConvertToRonAsync(expense.Amount, expense.Currency);
+                expensesInRon.Add((expense, amountInRon));
+            }
+
+            // Summary calculations using RON amounts
+            var total = expensesInRon.Sum(e => e.amountInRon);
             var count = expenses.Count;
             var days = (endDate - startDate).Days + 1;
             var dailyAverage = total / days;
 
             // Daily statistics
-            var dailyTotals = expenses
-                .GroupBy(e => e.Date.Date)
-                .Select(g => g.Sum(e => e.Amount))
+            var dailyTotals = expensesInRon
+                .GroupBy(e => e.expense.Date.Date)
+                .Select(g => g.Sum(e => e.amountInRon))
                 .OrderByDescending(x => x)
                 .ToList();
 
@@ -65,13 +90,13 @@ public partial class ReportsPage
             DailyAverageLabel.Text = $"{dailyAverage:F2} RON";
             MaxDayLabel.Text = $"{maxDay:F2} RON";
 
-            // Top categories
-            var topCategories = expenses
-                .GroupBy(e => e.Category)
+            // Top categories using RON amounts
+            var topCategories = expensesInRon
+                .GroupBy(e => e.expense.Category)
                 .Select(g => new
                 {
                     Category = g.Key,
-                    Amount = g.Sum(e => e.Amount),
+                    Amount = g.Sum(e => e.amountInRon),
                     Count = g.Count()
                 })
                 .OrderByDescending(x => x.Amount)

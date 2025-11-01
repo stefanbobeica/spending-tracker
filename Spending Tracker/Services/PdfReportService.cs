@@ -1,6 +1,7 @@
 ﻿using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
+using Spending_Tracker.Models;
 using PdfColors = QuestPDF.Helpers.Colors;
 
 namespace Spending_Tracker.Services;
@@ -8,16 +9,50 @@ namespace Spending_Tracker.Services;
 public class PdfReportService
 {
     private readonly DatabaseService _databaseService;
+    private readonly CurrencyService _currencyService;
 
     public PdfReportService(DatabaseService databaseService)
     {
         _databaseService = databaseService;
+        _currencyService = new CurrencyService();
         QuestPDF.Settings.License = LicenseType.Community;
+    }
+    
+    private async Task<double> ConvertToRonAsync(double amount, string currency)
+    {
+        if (currency == "RON")
+            return amount;
+            
+        // For currencies other than RON, we need to convert back to RON
+        // The API gives rates from RON to other currencies (RON -> Currency)
+        // So to convert back: amount / rate
+        var rates = await _currencyService.GetExchangeRatesAsync();
+        
+        if (rates.ContainsKey(currency) && rates[currency] > 0)
+        {
+            return amount / rates[currency];
+        }
+        
+        return amount; // If rate not found, return as-is
     }
 
     public async Task<string> GenerateMonthlyReportAsync(DateTime startDate, DateTime endDate)
     {
         var expenses = await _databaseService.GetExpensesByDateRangeAsync(startDate, endDate);
+        
+        // Convert all amounts to RON
+        var expensesInRon = new List<(Expense expense, double amountInRon)>();
+        foreach (var expense in expenses)
+        {
+            var amountInRon = await ConvertToRonAsync(expense.Amount, expense.Currency);
+            expensesInRon.Add((expense, amountInRon));
+        }
+        
+        // Calculate totals in RON for the report
+        var totalInRon = expensesInRon.Sum(e => e.amountInRon);
+        var expenseCount = expenses.Count;
+        var days = Math.Max((endDate - startDate).Days, 1);
+        var dailyAverage = expenseCount > 0 ? totalInRon / days : 0;
         
         var fileName = $"Raport_Cheltuieli_{startDate:yyyy_MM_dd}_to_{endDate:yyyy_MM_dd}.pdf";
         var filePath = Path.Combine(FileSystem.AppDataDirectory, fileName);
@@ -62,11 +97,11 @@ public class PdfReportService
                                 col.Item().Background(PdfColors.Blue.Lighten4).Padding(15).Column(summaryCol =>
                                 {
                                     summaryCol.Item().Text("📊 SUMAR").FontSize(14).Bold().FontColor(PdfColors.Blue.Darken2);
-                                    summaryCol.Item().PaddingTop(8).Text($"Total Cheltuieli: {expenses.Sum(e => e.Amount):F2} RON")
+                                    summaryCol.Item().PaddingTop(8).Text($"Total Cheltuieli: {totalInRon:F2} RON")
                                         .FontSize(12).SemiBold();
-                                    summaryCol.Item().Text($"Număr Tranzacții: {expenses.Count}")
+                                    summaryCol.Item().Text($"Număr Tranzacții: {expenseCount}")
                                         .FontSize(11);
-                                    summaryCol.Item().Text($"Media pe Zi: {(expenses.Count > 0 ? expenses.Sum(e => e.Amount) / Math.Max((endDate - startDate).Days, 1) : 0):F2} RON")
+                                    summaryCol.Item().Text($"Media pe Zi: {dailyAverage:F2} RON")
                                         .FontSize(11);
                                 });
                             });
@@ -78,15 +113,15 @@ public class PdfReportService
                             catColumn.Item().PaddingBottom(10).Text("📁 CHELTUIELI PE CATEGORII")
                                 .FontSize(14).Bold().FontColor(PdfColors.Blue.Darken2);
 
-                            var categoryGroups = expenses
-                                .GroupBy(e => e.Category)
+                            var categoryGroups = expensesInRon
+                                .GroupBy(e => e.expense.Category)
                                 .Select(g => new
                                 {
                                     Category = g.Key,
-                                    Total = g.Sum(e => e.Amount),
+                                    Total = g.Sum(e => e.amountInRon),
                                     Count = g.Count(),
-                                    Percentage = expenses.Sum(e => e.Amount) > 0 
-                                        ? (g.Sum(e => e.Amount) / expenses.Sum(e => e.Amount) * 100) 
+                                    Percentage = totalInRon > 0
+                                        ? (g.Sum(e => e.amountInRon) / totalInRon * 100)
                                         : 0
                                 })
                                 .OrderByDescending(x => x.Total);
@@ -125,11 +160,15 @@ public class PdfReportService
                             });
 
                             // Table Rows - limit to prevent space issues
-                            var sortedExpenses = expenses.OrderByDescending(e => e.Date).Take(100).ToList();
+                            var sortedExpensesList = expensesInRon.OrderByDescending(e => e.expense.Date).Take(100).ToList();
                             
                             // Use dynamic container for each row to allow page breaks
-                            foreach (var (expense, index) in sortedExpenses.Select((e, i) => (e, i)))
+                            for (int index = 0; index < sortedExpensesList.Count; index++)
                             {
+                                var expenseData = sortedExpensesList[index];
+                                var expense = expenseData.expense;
+                                var amountInRon = expenseData.amountInRon;
+                                
                                 var bgColor = index % 2 == 0 
                                     ? PdfColors.White 
                                     : PdfColors.Grey.Lighten5;
@@ -144,7 +183,7 @@ public class PdfReportService
                                         row.RelativeItem().Text(expense.Date.ToString("dd/MM/yyyy")).FontSize(9);
                                         row.RelativeItem().Text(expense.Category ?? "N/A").FontSize(9);
                                         row.RelativeItem(2).Text(expense.Description ?? "N/A").FontSize(9);
-                                        row.ConstantItem(80).AlignRight().Text($"{expense.Amount:F2}").FontSize(9).SemiBold();
+                                        row.ConstantItem(80).AlignRight().Text(amountInRon.ToString("F2")).FontSize(9).SemiBold();
                                     });
                             }
                             
@@ -183,6 +222,14 @@ public class PdfReportService
         var allExpenses = await _databaseService.GetExpensesByDateRangeAsync(startDate, endDate);
         var expenses = allExpenses.Where(e => e.Category == categoryName).ToList();
         
+        // Convert all amounts to RON
+        var expensesInRon = new List<(Expense expense, double amountInRon)>();
+        foreach (var expense in expenses)
+        {
+            var amountInRon = await ConvertToRonAsync(expense.Amount, expense.Currency);
+            expensesInRon.Add((expense, amountInRon));
+        }
+        
         var fileName = $"Raport_{categoryName}_{startDate:yyyy_MM_dd}_to_{endDate:yyyy_MM_dd}.pdf";
         var filePath = Path.Combine(FileSystem.AppDataDirectory, fileName);
 
@@ -215,19 +262,24 @@ public class PdfReportService
                     .PaddingVertical(20)
                     .Column(column =>
                     {
-                        // Summary
+                        // Summary using converted RON amounts
+                        var totalCategoryInRon = expensesInRon.Sum(e => e.amountInRon);
+                        var avgInRon = expensesInRon.Count > 0 ? expensesInRon.Average(e => e.amountInRon) : 0;
+                        var maxInRon = expensesInRon.Count > 0 ? expensesInRon.Max(e => e.amountInRon) : 0;
+                        var minInRon = expensesInRon.Count > 0 ? expensesInRon.Min(e => e.amountInRon) : 0;
+                        
                         column.Item().PaddingBottom(20).Background(PdfColors.Green.Lighten4).Padding(20).Column(summaryCol =>
                         {
                             summaryCol.Item().Text("📊 SUMAR").FontSize(14).Bold().FontColor(PdfColors.Green.Darken2);
-                            summaryCol.Item().PaddingTop(8).Text($"Total Cheltuieli: {expenses.Sum(e => e.Amount):F2} RON")
+                            summaryCol.Item().PaddingTop(8).Text($"Total Cheltuieli: {totalCategoryInRon:F2} RON")
                                 .FontSize(14).Bold();
                             summaryCol.Item().Text($"Număr Tranzacții: {expenses.Count}")
                                 .FontSize(12);
-                            summaryCol.Item().Text($"Media pe Tranzacție: {(expenses.Count > 0 ? expenses.Average(e => e.Amount) : 0):F2} RON")
+                            summaryCol.Item().Text($"Media pe Tranzacție: {avgInRon:F2} RON")
                                 .FontSize(12);
-                            summaryCol.Item().Text($"Cheltuială Maximă: {(expenses.Count > 0 ? expenses.Max(e => e.Amount) : 0):F2} RON")
+                            summaryCol.Item().Text($"Cheltuială Maximă: {maxInRon:F2} RON")
                                 .FontSize(12);
-                            summaryCol.Item().Text($"Cheltuială Minimă: {(expenses.Count > 0 ? expenses.Min(e => e.Amount) : 0):F2} RON")
+                            summaryCol.Item().Text($"Cheltuială Minimă: {minInRon:F2} RON")
                                 .FontSize(12);
                         });
 

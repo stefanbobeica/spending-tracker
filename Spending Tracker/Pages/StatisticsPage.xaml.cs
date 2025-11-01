@@ -6,15 +6,32 @@ namespace Spending_Tracker.Pages;
 public partial class StatisticsPage
 {
     private readonly DatabaseService _databaseService;
+    private readonly CurrencyService _currencyService;
 
     public StatisticsPage()
     {
         InitializeComponent();
         _databaseService = new DatabaseService();
+        _currencyService = new CurrencyService();
         
         var startOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
         StartDatePicker.Date = startOfMonth;
         EndDatePicker.Date = DateTime.Now;
+    }
+    
+    private async Task<double> ConvertToRonAsync(double amount, string currency)
+    {
+        if (currency == "RON")
+            return amount;
+            
+        var rates = await _currencyService.GetExchangeRatesAsync();
+        
+        if (rates.ContainsKey(currency) && rates[currency] > 0)
+        {
+            return amount / rates[currency];
+        }
+        
+        return amount;
     }
 
     protected override async void OnAppearing()
@@ -51,16 +68,24 @@ public partial class StatisticsPage
                 return;
             }
 
-            // Summary calculations
-            var total = expenses.Sum(e => e.Amount);
+            // Convert all amounts to RON
+            var expensesInRon = new List<(Expense expense, double amountInRon)>();
+            foreach (var expense in expenses)
+            {
+                var amountInRon = await ConvertToRonAsync(expense.Amount, expense.Currency);
+                expensesInRon.Add((expense, amountInRon));
+            }
+
+            // Summary calculations using RON amounts
+            var total = expensesInRon.Sum(e => e.amountInRon);
             var count = expenses.Count;
             var days = (EndDatePicker.Date - StartDatePicker.Date).Days + 1;
             var average = total / days;
 
             // Calculate max day
-            var dailyTotals = expenses
-                .GroupBy(e => e.Date.Date)
-                .Select(g => g.Sum(e => e.Amount))
+            var dailyTotals = expensesInRon
+                .GroupBy(e => e.expense.Date.Date)
+                .Select(g => g.Sum(e => e.amountInRon))
                 .OrderByDescending(x => x)
                 .FirstOrDefault();
 
@@ -76,13 +101,13 @@ public partial class StatisticsPage
             
             CategoriesCountLabel.Text = categories.Count.ToString();
 
-            // Group by category
-            var categoryGroups = expenses
-                .GroupBy(e => e.Category)
+            // Group by category using RON amounts
+            var categoryGroups = expensesInRon
+                .GroupBy(e => e.expense.Category)
                 .Select(g => new
                 {
                     Category = g.Key,
-                    Amount = g.Sum(e => e.Amount),
+                    Amount = g.Sum(e => e.amountInRon),
                     Color = categoryColors.ContainsKey(g.Key) ? categoryColors[g.Key] : "#999999"
                 })
                 .OrderByDescending(x => x.Amount)
